@@ -1,0 +1,22 @@
+{
+  "name": "sixty-nine/unit-test-demo",
+  "description": "Simple demo of unit testing",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Daniele Barsotti",
+      "email": "daniele.barsotti@energy.ch"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6"
+  },
+  "autoload": {
+    "psr-4": {
+      "SixtyNine\\Fibonacci\\": "src/SixtyNine/Fibonacci"
+    }
+  }
+}
