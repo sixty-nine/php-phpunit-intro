@@ -1,10 +1,11 @@
 # Introduction to PHPUnit
 
-## Introduction
+Yes, writing unit test is easy!
 
-Yes, writing unit test is easy !
-
-At least, in this repo I will try to show it is.
+> Testing your code makes you a better programmer.
+> Making your code testable makes your code better and you an even better programmer.
+>
+> -An anonymous developer
 
 ## Setup the infrastructure
 
@@ -51,10 +52,12 @@ Important stuff to notice:
  * It is always good to leave a comment with a reference to the current file format specification.
  * In the `bootstrap` attribute of the `phpunit` tag we can call a php script. Here we simply call the composer autoload.
  * The source code is supposed to be in the directory `src` as specified in the `<filter>`.
- * The tests are supposed to be places in the directory `tests` and their filename must end with `Test.php` as said in the `<testsuite>`.
+ * The tests are supposed to be placed in the directory `tests` and their filename must end with `Test.php` as said in the `<testsuite>`.
  * This structure is typical of a Laravel project. Adapt to your need.
 
-## Writing your first test
+## Your first test
+
+### Writing your first test
 
 Create your first test case in `tests/MyFirstTest.php` with the following content.
 
@@ -82,7 +85,7 @@ class MyFirstTest extends TestCase
 
 We have written a wrong assertion: `$this->assertTrue(false)`. However it will not be executed. You will see below why.
 
-## Executing your first test
+### Executing your first test
 
 Now run the tests and see everything is green.
 
@@ -105,7 +108,7 @@ OK (1 test, 1 assertion)
 As you can see we have a single test and a single assertion executed.
 The function `this_is_not_a_test` was not called at all. It's because its name does not start with `test`.
 
-## Failing tests
+### Failing tests
 
 Let's refactor the `this_is_not_a_test` function so that it becomes a test. Its name now starts with `test`.
 
@@ -151,7 +154,7 @@ vendor/bin/phpunit tests/Fibonacci/Fibonacci2Test.php
 ### Stop when shit happens
 
 It is annoying to debug a test suite with lot of failing test.
-To simplify our life it is possible to ask PHPUnit to stop an error or a failure occurred.
+To simplify our life it is possible to ask PHPUnit to stop when an error or a failure occur.
 These are not the same, errors are PHP errors and exceptions, failures are assertions failures.
 
 ```bash
@@ -195,7 +198,9 @@ class HugeTestCase extends TestCase
     /** @group current */
     public function testSomethingCool() {}
 
-    // ...
+    // ...## Introduction
+
+
 
     public function testSomeMoreUninterestingStuff() {}
 }
@@ -206,6 +211,68 @@ Then you can run this single test like this:
 ```bash
 vendor/bin/phpunit --group current
 ```
+
+## Annotations
+
+### Testing exceptions
+
+If you have an exception in the codee you are testing, it will make your test fail.
+
+However it might be usefull and sometimes required to test that an exception was thrown.
+
+This is possible with some annotations.
+
+```
+/**
+ * @expectedException \InvalidArgumentException
+ * @expectedExceptionMessage The number must be positive
+ */
+public function testArgumentMustBePositive()
+{
+    $fibonacci = new Fibonacci();
+    $fibonacci->calc(-1);
+}
+```
+
+Asserting an exception is thrown is right and very usefull.
+
+On the other hand, you should avoid testing the exception messages. Those will very likely change making suddenly your
+tests fail.
+
+### Data providers
+
+Data provider allow you to call the same test method multiple time with different paramters.
+
+A data provider must return an array of parameters arrays.
+
+For each of those parameters arrays the test method will be called and its parameters will be replaced by the one
+provided.
+
+```
+/** @dataProvider myTestProvider */
+public function testMyTest(int $number, int $expectedResult)
+{
+    $fibonacci = new Fibonacci();
+    $this->assertSame($expectedResult, $fibonacci->calc($number));
+}
+
+public function myTestProvider()
+{
+    return [
+        [0, 0],
+        [1, 1],
+        [2, 1],
+        // ...
+    ];
+}
+
+```
+
+In the previous example the function `testMyTest` will be called 3 times with:
+
+ * $number = 0, $expectedResult = 0
+ * $number = 1, $expectedResult = 1
+ * $number = 2, $expectedResult = 1
 
 ## Generating code coverage
 
@@ -221,7 +288,6 @@ Then lets tweak our phpunit.xml configuration a little:
 </logging>
 
 ```
-    </testsuite></filter>
 
 Next time you will run the test you will see this notice in your console:
 
@@ -229,5 +295,6 @@ Next time you will run the test you will see this notice in your console:
 Generating code coverage report in HTML format ... done
 ```
 
-The code coverage entry point will be in `coverage/index.html`. Explore it with a browser pointing it to
-`file:///absolute/path/to/my/project/coverage/index.html`.
+The code coverage entry point will be in `coverage/index.html`.
+
+Explore it with a browser pointing it to `file:///absolute/path/to/my/project/coverage/index.html`.
