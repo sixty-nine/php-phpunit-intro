@@ -274,6 +274,27 @@ In the previous example the function `testMyTest` will be called 3 times with:
  * $number = 1, $expectedResult = 1
  * $number = 2, $expectedResult = 1
 
+### Tests run order
+
+By default it is not possible to predict in which order PHPUnit will run the test methods in a test case.
+
+*It is not guaranteed that they will be run in the order they appear in the source code!*
+
+If you need a test method to be run after another one you may use the `@depends` annotation.
+
+
+```
+public function testFirstTest() { }
+
+/** @depends testFirstTest */
+public function testSecondTest() { }
+
+```
+
+However please note that having tests that need to be run in a given order is a "code smell".
+
+Ideally tests should be independent one from the other.
+
 ## Generating code coverage
 
 Code coverage can help you to identify parts of your code that need to be tested.
