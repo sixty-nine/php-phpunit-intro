@@ -216,6 +216,33 @@ Then you can run this single test like this:
 vendor/bin/phpunit --group current
 ```
 
+## Assertions
+
+PHPUnit has plenty of assertions, let's look at some of them.
+
+In the assertions parameters, the expected values must come before the actual value.
+
+```php
+<?php
+assertTrue($bool)
+assertFalse($bool)
+assertNull($actual)
+
+// All array-related assertion will check this...
+assertTrue(is_array($actual))
+// ...but there is no other way to simply assert something is an array.
+
+assertEquals($expected, $actual)    // Equals (==)
+assertSame($expected, $actual)      // Strictly equals (===)
+
+assertCount($expected, $array)
+assertArrayHasKey($key, $array)             // array_key_exists
+assertArraySubset($subset, $array)          // It's often difficult to assert arrays are equal...
+
+assertInstanceOf(MyClass::class, $instance)                 // Always !!
+assertAttributeEquals($expected, 'myAttribute', $instance)  // Allows to test protected and private attributes
+```
+
 ## Annotations
 
 ### Testing exceptions
