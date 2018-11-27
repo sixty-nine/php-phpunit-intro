@@ -2,6 +2,9 @@
 
 namespace SixtyNine\Fibonacci;
 
+/**
+ * Fibonnaci numbers linear version.
+ */
 class Fibonacci2
 {
     public function calc(int $number) : int
