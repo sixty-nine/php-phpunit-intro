@@ -139,6 +139,12 @@ FAILURES!
 Tests: 2, Assertions: 2, Failures: 1.
 ```
 
+First things to look at: 
+
+ * the reason: Failed asserting that false is true.
+ * the filename: tests/MyFirstTest.php
+ * the line number: 15
+
 ## Useful CLI parameters
 
 ### Running only some tests
@@ -181,7 +187,7 @@ MyFirst
 
 It is possible to assign test methods to groups and then only run specific groups of tests.
 
-A real life use case: each time I have to debug a single test in a huge test case I do mark it as being part of the
+A real life use case: each time I have to debug a single test in a huge test case I mark it as being part of the
 `current` group:
 
 ```php
@@ -198,9 +204,7 @@ class HugeTestCase extends TestCase
     /** @group current */
     public function testSomethingCool() {}
 
-    // ...## Introduction
-
-
+    // ...
 
     public function testSomeMoreUninterestingStuff() {}
 }
@@ -216,7 +220,7 @@ vendor/bin/phpunit --group current
 
 ### Testing exceptions
 
-If you have an exception in the codee you are testing, it will make your test fail.
+If you have an exception in the code you are testing, it will make your test fail.
 
 However it might be usefull and sometimes required to test that an exception was thrown.
 
@@ -241,9 +245,9 @@ tests fail.
 
 ### Data providers
 
-Data provider allow you to call the same test method multiple time with different paramters.
+Data provider allow you to call the same test method multiple time with different parameters.
 
-A data provider must return an array of parameters arrays.
+A data provider must return an *array of parameters arrays*.
 
 For each of those parameters arrays the test method will be called and its parameters will be replaced by the one
 provided.
@@ -319,3 +323,8 @@ Generating code coverage report in HTML format ... done
 The code coverage entry point will be in `coverage/index.html`.
 
 Explore it with a browser pointing it to `file:///absolute/path/to/my/project/coverage/index.html`.
+
+It is important to understand that code coverage indicates which line of code was **executed**. It does not tells anything
+about whether it was actually tested (assertions where made over it) or not.
+
+Code coverage requires XDebug enabled!
